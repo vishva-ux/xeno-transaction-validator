@@ -331,12 +331,20 @@ export default function App() {
     if (activeMap.phone) requiredColumns.push(activeMap.phone);
     if (activeMap.date) requiredColumns.push(activeMap.date);
 
+    const numericColumns: string[] = [];
+    headers.forEach(h => {
+      const lower = h.toLowerCase();
+      if (lower.includes('quantity') || lower.includes('price') || lower.includes('amount') || lower.includes('age') || lower.includes('qty')) {
+        numericColumns.push(h);
+      }
+    });
+
     const config = {
       phoneRules: DEFAULT_COUNTRY_PHONE_RULES,
       defaultPhoneCountry: currentPhoneCountry,
       dateFormat: currentDateFormat,
       requiredColumns,
-      numericColumns: []
+      numericColumns
     };
 
     const result = validateDataset(dataList, config, activeMap);
@@ -386,12 +394,20 @@ export default function App() {
       if (colMap.phone) requiredColumns.push(colMap.phone);
       if (colMap.date) requiredColumns.push(colMap.date);
 
+      const numericColumns: string[] = [];
+      headers.forEach(h => {
+        const lower = h.toLowerCase();
+        if (lower.includes('quantity') || lower.includes('price') || lower.includes('amount') || lower.includes('age') || lower.includes('qty')) {
+          numericColumns.push(h);
+        }
+      });
+
       const config = {
         phoneRules: DEFAULT_COUNTRY_PHONE_RULES,
         defaultPhoneCountry: phoneDefaultCountry,
         dateFormat,
         requiredColumns,
-        numericColumns: []
+        numericColumns
       };
 
       const result = validateDataset(fixedDataset, config, colMap);
@@ -437,12 +453,20 @@ export default function App() {
     if (colMap.phone) requiredColumns.push(colMap.phone);
     if (colMap.date) requiredColumns.push(colMap.date);
 
+    const numericColumns: string[] = [];
+    headers.forEach(h => {
+      const lower = h.toLowerCase();
+      if (lower.includes('quantity') || lower.includes('price') || lower.includes('amount') || lower.includes('age') || lower.includes('qty')) {
+        numericColumns.push(h);
+      }
+    });
+
     const config = {
       phoneRules: DEFAULT_COUNTRY_PHONE_RULES,
       defaultPhoneCountry: phoneDefaultCountry,
       dateFormat,
       requiredColumns,
-      numericColumns: []
+      numericColumns
     };
 
     const result = validateDataset(fixedDataset, config, colMap);
@@ -580,6 +604,14 @@ export default function App() {
         email = `${namePart}@gmail.com`;
       }
 
+      const products = ['Wireless Mouse', 'Mechanical Keyboard', 'LED Monitor', 'USB-C Hub', 'Bluetooth Headset', 'Smart Watch'];
+      const product = products[i % products.length];
+      const qty = (i % 5) + 1;
+      const price = 25 + (i % 15) * 10;
+      const amt = qty * price;
+      const payments = ['UPI', 'Credit Card', 'NetBanking', 'Debit Card'];
+      const payMethod = payments[i % payments.length];
+
       generatedRows.push({
         customer_id: 1000 + i,
         full_name: name,
@@ -588,7 +620,15 @@ export default function App() {
         age: age,
         city: city,
         signup_date: date,
-        subscription_type: sub
+        subscription_type: sub,
+        order_id: `ORD-2025-${10000 + i}`,
+        order_date: date,
+        product_name: product,
+        quantity: qty,
+        unit_price: price,
+        total_amount: amt,
+        payment_method: payMethod,
+        transaction_status: i % 25 === 0 ? 'Failed' : 'Success'
       });
     }
 
@@ -1293,6 +1333,11 @@ export default function App() {
                           <span className="lbl">Date Format</span>
                           <span className="val">{isAutoFixed ? '0' : `${summary.errorCountsByType.dateFormat} (${summary.invalidRows > 0 ? ((summary.errorCountsByType.dateFormat / summary.invalidRows) * 100).toFixed(0) : 0}%)`}</span>
                         </div>
+                        <div className="legend-item">
+                          <span className="dot" style={{ backgroundColor: '#ec4899' }}></span>
+                          <span className="lbl">Numeric Format</span>
+                          <span className="val">{isAutoFixed ? '0' : `${summary.errorCountsByType.numericFormat} (${summary.invalidRows > 0 ? ((summary.errorCountsByType.numericFormat / summary.invalidRows) * 100).toFixed(0) : 0}%)`}</span>
+                        </div>
                       </div>
                       
                       <button className="chart-footer-link" onClick={() => setCurrentMenu('auditor')}>
@@ -1638,6 +1683,19 @@ export default function App() {
                           </div>
                         </div>
                         <span className="badge badge-success">Passed (0 Errors)</span>
+                      </div>
+
+                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', border: '1px solid var(--border)', borderRadius: '6px', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                          <BarChart2 size={16} color="var(--primary)" />
+                          <div>
+                            <strong style={{ fontSize: '13.5px' }}>Numeric Constraints Check</strong>
+                            <div style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>Verifies that transaction quantities, unit prices, and amounts are positive values</div>
+                          </div>
+                        </div>
+                        <span className={`badge ${summary.errorCountsByType.numericFormat > 0 ? 'badge-error' : 'badge-success'}`}>
+                          {summary.errorCountsByType.numericFormat > 0 ? `${summary.errorCountsByType.numericFormat} Errors` : 'Passed'}
+                        </span>
                       </div>
 
                       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', border: '1px solid var(--border)', borderRadius: '6px', alignItems: 'center' }}>
