@@ -44,41 +44,19 @@ import {
   type ValidationSummary
 } from './utils/validation';
 
+import { INDIA_MAP_PATHS } from './utils/indiaMapData';
+
 // Coordinates for plotting cities on the India Map
 const cityCoordinates: Record<string, { x: number, y: number }> = {
-  'Delhi': { x: 44, y: 38 },
-  'Kolkata': { x: 74, y: 62 },
-  'Bangalore': { x: 43, y: 94 },
-  'Hyderabad': { x: 48, y: 78 },
-  'Ahmedabad': { x: 25, y: 58 },
-  'Chennai': { x: 50, y: 96 },
-  'Mumbai': { x: 28, y: 74 }
+  'Delhi': { x: 188, y: 205 },
+  'Kolkata': { x: 425, y: 374 },
+  'Bangalore': { x: 215, y: 580 },
+  'Hyderabad': { x: 260, y: 460 },
+  'Ahmedabad': { x: 100, y: 330 },
+  'Chennai': { x: 265, y: 590 },
+  'Mumbai': { x: 140, y: 430 }
 };
 
-// Dotted grid representing India shape
-const indiaBackgroundDots = [
-  { x: 46, y: 12 }, { x: 48, y: 10 }, { x: 50, y: 12 }, { x: 52, y: 14 },
-  { x: 44, y: 16 }, { x: 48, y: 16 }, { x: 52, y: 16 }, { x: 54, y: 18 },
-  { x: 42, y: 20 }, { x: 46, y: 20 }, { x: 50, y: 20 }, { x: 54, y: 20 },
-  { x: 44, y: 24 }, { x: 48, y: 24 }, { x: 52, y: 24 }, { x: 56, y: 24 },
-  { x: 38, y: 28 }, { x: 42, y: 28 }, { x: 46, y: 28 }, { x: 50, y: 28 }, { x: 54, y: 28 }, { x: 58, y: 28 },
-  { x: 36, y: 34 }, { x: 40, y: 34 }, { x: 44, y: 34 }, { x: 48, y: 34 }, { x: 52, y: 34 }, { x: 56, y: 34 }, { x: 60, y: 34 },
-  { x: 34, y: 40 }, { x: 38, y: 40 }, { x: 42, y: 40 }, { x: 46, y: 40 }, { x: 50, y: 40 }, { x: 54, y: 40 }, { x: 58, y: 40 }, { x: 62, y: 40 },
-  { x: 26, y: 46 }, { x: 30, y: 46 }, { x: 34, y: 46 }, { x: 38, y: 46 }, { x: 42, y: 46 }, { x: 46, y: 46 }, { x: 50, y: 46 }, { x: 54, y: 46 }, { x: 58, y: 46 }, { x: 62, y: 46 }, { x: 66, y: 46 },
-  { x: 20, y: 52 }, { x: 24, y: 52 }, { x: 28, y: 52 }, { x: 32, y: 52 }, { x: 36, y: 52 }, { x: 40, y: 52 }, { x: 44, y: 52 }, { x: 48, y: 52 }, { x: 52, y: 52 }, { x: 56, y: 52 }, { x: 60, y: 52 }, { x: 64, y: 52 }, { x: 68, y: 52 },
-  { x: 18, y: 58 }, { x: 22, y: 58 }, { x: 26, y: 58 }, { x: 30, y: 58 }, { x: 34, y: 58 }, { x: 38, y: 58 }, { x: 42, y: 58 }, { x: 46, y: 58 }, { x: 50, y: 58 }, { x: 52, y: 58 }, { x: 56, y: 58 }, { x: 60, y: 58 }, { x: 64, y: 58 }, { x: 68, y: 58 }, { x: 72, y: 58 },
-  { x: 22, y: 64 }, { x: 26, y: 64 }, { x: 30, y: 64 }, { x: 34, y: 64 }, { x: 38, y: 64 }, { x: 42, y: 64 }, { x: 46, y: 64 }, { x: 50, y: 64 }, { x: 54, y: 64 }, { x: 58, y: 64 }, { x: 62, y: 64 }, { x: 66, y: 64 }, { x: 70, y: 64 }, { x: 74, y: 64 }, { x: 78, y: 64 },
-  { x: 26, y: 70 }, { x: 30, y: 70 }, { x: 34, y: 70 }, { x: 38, y: 70 }, { x: 42, y: 70 }, { x: 46, y: 70 }, { x: 50, y: 70 }, { x: 54, y: 70 }, { x: 58, y: 70 }, { x: 62, y: 70 }, { x: 66, y: 70 }, { x: 70, y: 70 }, { x: 74, y: 70 },
-  { x: 30, y: 76 }, { x: 34, y: 76 }, { x: 38, y: 76 }, { x: 42, y: 76 }, { x: 46, y: 76 }, { x: 50, y: 76 }, { x: 54, y: 76 }, { x: 58, y: 76 }, { x: 62, y: 76 }, { x: 66, y: 76 },
-  { x: 34, y: 82 }, { x: 38, y: 82 }, { x: 42, y: 82 }, { x: 46, y: 82 }, { x: 50, y: 82 }, { x: 54, y: 82 }, { x: 58, y: 82 }, { x: 62, y: 82 },
-  { x: 36, y: 88 }, { x: 40, y: 88 }, { x: 42, y: 88 }, { x: 46, y: 88 }, { x: 50, y: 88 }, { x: 54, y: 88 }, { x: 58, y: 88 },
-  { x: 40, y: 94 }, { x: 42, y: 94 }, { x: 46, y: 94 }, { x: 50, y: 94 }, { x: 54, y: 94 },
-  { x: 42, y: 100 }, { x: 46, y: 100 }, { x: 50, y: 100 },
-  { x: 44, y: 106 }, { x: 48, y: 106 },
-  { x: 46, y: 112 },
-  { x: 80, y: 50 }, { x: 84, y: 50 }, { x: 88, y: 50 },
-  { x: 82, y: 54 }, { x: 86, y: 54 }, { x: 90, y: 54 }
-];
 
 const mockDemoRows = [
   { customer_id: 1001, full_name: 'Aarav Sharma', city: 'Delhi', email: 'aarav.sharma@gmail.com', phone_number: '9123456789', age: 28, signup_date: '2025-04-01', subscription_type: 'Premium' },
@@ -1329,19 +1307,23 @@ export default function App() {
                       <div style={{ display: 'flex', gap: 16, alignItems: 'center', height: '140px' }}>
                         {/* Dotted vector India map */}
                         <div style={{ width: '40%', height: '100%', borderRight: '1px solid var(--border)', paddingRight: 12 }}>
-                          <svg viewBox="0 0 100 120" style={{ width: '100%', height: '100%' }}>
-                            {indiaBackgroundDots.map((dot, idx) => (
-                              <circle key={idx} cx={dot.x} cy={dot.y} r="1.1" fill="#cbd5e1" />
-                            ))}
+                          <svg viewBox="0 0 612 696" style={{ width: '100%', height: '100%' }}>
+                            <g fill="var(--primary-light)" stroke="var(--border)" strokeWidth="0.8" opacity="0.45">
+                              {INDIA_MAP_PATHS.map((state) => (
+                                <path key={state.id} d={state.d} id={state.id}>
+                                  <title>{state.name}</title>
+                                </path>
+                              ))}
+                            </g>
                             {Object.entries(summary.cityDistribution).map(([city, count]) => {
-                              const coords = cityCoordinates[city] || { x: 50, y: 60 };
+                              const coords = cityCoordinates[city] || { x: 300, y: 350 };
                               return (
                                 <g key={city}>
-                                  <circle cx={coords.x} cy={coords.y} r="3.2" fill="var(--primary)" opacity="0.6">
-                                    <animate attributeName="r" values="3.2;7;3.2" dur="2s" repeatCount="indefinite" />
-                                    <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite" />
+                                  <circle cx={coords.x} cy={coords.y} r="18" fill="var(--primary)" opacity="0.4">
+                                    <animate attributeName="r" values="12;28;12" dur="2.5s" repeatCount="indefinite" />
+                                    <animate attributeName="opacity" values="0.5;0;0.5" dur="2.5s" repeatCount="indefinite" />
                                   </circle>
-                                  <circle cx={coords.x} cy={coords.y} r="2.2" fill="var(--primary)">
+                                  <circle cx={coords.x} cy={coords.y} r="8" fill="var(--primary)">
                                     <title>{city}: {count} rows</title>
                                   </circle>
                                 </g>
