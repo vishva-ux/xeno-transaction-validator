@@ -896,7 +896,7 @@ body {
   flex-direction: column;
   position: relative;
   padding: 16px;
-  height: 270px;
+  height: 240px;
 }
 
 .chart-card-title {
@@ -909,8 +909,8 @@ body {
 /* Doughnut Chart */
 .doughnut-container {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 85px;
+  height: 85px;
   margin: 0 auto;
 }
 
@@ -961,15 +961,15 @@ body {
 .doughnut-legend {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px 12px;
-  margin-top: 12px;
+  gap: 4px 12px;
+  margin-top: 6px;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
+  font-size: 10.5px;
 }
 
 .legend-item .dot {
@@ -1004,7 +1004,7 @@ body {
   font-weight: 700;
   cursor: pointer;
   text-align: center;
-  padding-top: 8px;
+  padding-top: 4px;
   border-top: 0.5px solid var(--surface-secondary);
 }
 
